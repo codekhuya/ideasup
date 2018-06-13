@@ -19,9 +19,14 @@ class PivotsTableSeeder extends Seeder
             $article->tags()->sync($tags);
         }
 
-        $article = Article::all()->pluck('id');
-        foreach(Category::all() as $category){
-            $category->articles()->sync($article);
+        // $article = Article::all()->pluck('id');
+        // foreach(Category::all() as $category){
+        //     $category->articles()->sync($article);
+        // }
+
+        $c = Category::all()->pluck('id');
+        foreach(Article::all() as $a){
+            $a->categories()->sync($c);
         }
     }
 }
