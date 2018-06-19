@@ -24,4 +24,15 @@ class Article extends Model
     public function users(){
         return $this->belongsTo('App\User','user_id');
     }
+
+    protected function validator(array $input){
+        return Validator($input, [
+            'title' => 'required|max:255',
+            'summary' => 'required',
+            'content' => 'required',
+            'type' => 'required',
+            'status' => 'required',
+            'user_id' => 'required',
+        ]);
+    }
 }

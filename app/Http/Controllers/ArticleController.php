@@ -12,9 +12,29 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $by_status = $request->status;
+        $by_highlight = $request->highlight;
+        $by_type = $request->type;
+        $per_page = $request->per_page;
+        $sort = $request->sort;
+        $collumn = $request->collumn;
+        $articles = Article::when($by_status, function($query) use($by_status){
+            $query->where('status',$by_status);
+        }) //Lọc theo status
+        ->when($by_highlight, function($query) use($by_highlight){
+            $query->where('highlight',$by_highlight);
+        }) //Lọc theo highlight = nổi bật
+        ->when($by_type, function($query) use($by_type){
+            $query->where('type',$by_type);
+        }) // Lọc theo kiểu bài viết
+        ->when($collumn, function($query) use($collumn, $sort){
+            ($sort) ? ($query->orderBy($collumn, $sort)) : ($query->orderBy($collumn, 'ASC'));
+        }) // Lọc theo cột, sắp xếp theo tăng dần hoặc giảm dần
+        ->orderBy('created_at', 'DESC')
+        ->paginate($per_page);
+        return $this->sendResponse($articles, "Receive Articles successfully.");
     }
 
     /**

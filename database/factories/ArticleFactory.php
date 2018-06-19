@@ -12,6 +12,7 @@ $factory->define(App\Article::class, function (Faker $faker) {
         'view_count' => $faker->numberBetween($min = 100, $max = 9000),
         'share_count' => $faker->numberBetween($min = 10, $max = 900),
         'slug' => str_slug($slug),
+        'highlight' => $faker->numberBetween($min = 0, $max = 1),
         'type' => $faker->randomElement($array = array ('post','idea','page')),
         // 'user_id' => 9,
         'user_id' => User::inRandomOrder()->first()->id,
